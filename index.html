@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>안녕하세요! 햄의 프로필 🐣</title>
+  <!-- 웹폰트: Pretendard -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #fff9e6 0%, #fff0f5 50%, #f0f7ff 100%);
+      --card-bg: rgba(255, 255, 255, 0.88);
+      --primary: #ffb703;
+      --primary-dark: #fb8500;
+      --accent: #ff6b8b;
+      --text-main: #2d3142;
+      --text-sub: #6c757d;
+      --border-radius: 24px;
+      --shadow: 0 10px 30px rgba(251, 133, 0, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+      min-height: 100vh;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* 배경 장식 원 */
+    .bg-bubble {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 220, 100, 0.25);
+      z-index: 0;
+      pointer-events: none;
+      filter: blur(40px);
+    }
+    .bubble-1 { width: 280px; height: 280px; top: -50px; left: -50px; }
+    .bubble-2 { width: 320px; height: 320px; bottom: -80px; right: -60px; background: rgba(255, 182, 193, 0.25); }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    /* 메인 프로필 카드 */
+    .profile-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      border-radius: var(--border-radius);
+      padding: 2.5rem 2rem;
+      box-shadow: var(--shadow);
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .profile-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px rgba(251, 133, 0, 0.18);
+    }
+
+    /* 프로필 아바타 (이모지 🐣) */
+    .avatar-wrapper {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 1.25rem;
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 110px;
+      height: 110px;
+      background: linear-gradient(135deg, #ffeaa7 0%, #ffd166 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      box-shadow: 0 8px 20px rgba(255, 209, 102, 0.4);
+      margin: 0 auto;
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      user-select: none;
+      animation: gentle-float 3s ease-in-out infinite alternate;
+    }
+
+    .avatar:hover {
+      transform: scale(1.1) rotate(6deg);
+    }
+
+    .avatar:active {
+      transform: scale(0.95);
+    }
+
+    @keyframes gentle-float {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-8px); }
+    }
+
+    .badge {
+      display: inline-block;
+      background: #fff3bf;
+      color: #b07000;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
+      margin-bottom: 0.5rem;
+    }
+
+    .nickname {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 0.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+
+    .bio {
+      color: var(--text-sub);
+      font-size: 1rem;
+      margin-bottom: 1.75rem;
+      line-height: 1.5;
+    }
+
+    /* 정보 그리드 */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .info-item {
+      background: #ffffff;
+      border: 1px solid #fae1c3;
+      border-radius: 16px;
+      padding: 1.1rem 0.9rem;
+      text-align: left;
+      transition: all 0.2s ease;
+    }
+
+    .info-item:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 183, 3, 0.15);
+    }
+
+    .info-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #9c9a97;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.35rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .info-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* 취미 연계 미니 캔버스 */
+    .drawing-section {
+      background: #fffdfa;
+      border: 1.5px dashed #ffd166;
+      border-radius: 18px;
+      padding: 1rem;
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .drawing-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.6rem;
+    }
+
+    .drawing-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #e27d00;
+    }
+
+    .clear-btn {
+      background: none;
+      border: 1px solid #ffd166;
+      color: #b07000;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.6rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .clear-btn:hover {
+      background: #ffeaa7;
+    }
+
+    canvas {
+      width: 100%;
+      height: 130px;
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #ffe8cc;
+      cursor: crosshair;
+      touch-action: none;
+      display: block;
+    }
+
+    /* 인터랙션 버튼 */
+    .btn-action {
+      width: 100%;
+      margin-top: 1.25rem;
+      padding: 0.9rem;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #ffb703 0%, #fb8500 100%);
+      color: white;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(251, 133, 0, 0.3);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(251, 133, 0, 0.4);
+    }
+
+    .btn-action:active {
+      transform: scale(0.98);
+    }
+
+    /* 날아다니는 병아리 파티클 */
+    .floating-emoji {
+      position: fixed;
+      font-size: 2rem;
+      pointer-events: none;
+      animation: float-up 1.2s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+      z-index: 999;
+      user-select: none;
+    }
+
+    @keyframes float-up {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(0.6) rotate(0deg);
+      }
+      50% {
+        transform: translate(var(--x-offset), -80px) scale(1.3) rotate(var(--rot));
+      }
+      100% {
+        opacity: 0;
+        transform: translate(var(--x-offset), -180px) scale(0.9) rotate(calc(var(--rot) * 2));
+      }
+    }
+
+    footer {
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: #9c9a97;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 배경 블러 장식 -->
+  <div class="bg-bubble bubble-1"></div>
+  <div class="bg-bubble bubble-2"></div>
+
+  <div class="container">
+    <div class="profile-card">
+      
+      <!-- 아바타 (클릭 시 병아리 팝업 효과) -->
+      <div class="avatar-wrapper" onclick="spawnChicks(event)">
+        <div class="avatar" title="클릭해보세요!">🐣</div>
+      </div>
+
+      <span class="badge">Welcome to my space</span>
+      <h1 class="nickname">햄 <span style="font-size: 1.5rem;">✨</span></h1>
+      <p class="bio">반가워요! 따뜻하고 즐거운 이야기를 그리는 공간입니다.</p>
+
+      <!-- 프로필 정보 그리드 -->
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">👤 닉네임</div>
+          <div class="info-value">햄</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">🎨 취미</div>
+          <div class="info-value">그림그리기</div>
+        </div>
+        <div class="info-item" style="grid-column: span 2;">
+          <div class="info-label">💛 최애 이모지</div>
+          <div class="info-value">병아리 🐣</div>
+        </div>
+      </div>
+
+      <!-- 그림그리기 취미를 담은 미니 낙서장 -->
+      <div class="drawing-section">
+        <div class="drawing-header">
+          <span class="drawing-title">🎨 햄의 미니 낙서 캔버스</span>
+          <button class="clear-btn" onclick="clearCanvas()">지우기</button>
+        </div>
+        <canvas id="canvas"></canvas>
+      </div>
+
+      <!-- 인터랙션 버튼 -->
+      <button class="btn-action" onclick="spawnChicks(event)">
+        <span>🐣 햄에게 병아리 응원 보내기!</span>
+      </button>
+
+    </div>
+
+    <footer>
+      © 2026 햄 (Ham) • Made with 🐣
+    </footer>
+  </div>
+
+  <script>
+    // 🐣 병아리 퐁퐁 날리는 인터랙션
+    function spawnChicks(e) {
+      const clickX = e.clientX || window.innerWidth / 2;
+      const clickY = e.clientY || window.innerHeight / 2;
+      const count = 7;
+      const emojis = ['🐣', '🐥', '✨', '💛', '🎨'];
+
+      for (let i = 0; i < count; i++) {
+        const el = document.createElement('div');
+        el.className = 'floating-emoji';
+        el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+
+        const xOffset = (Math.random() - 0.5) * 160 + 'px';
+        const rot = (Math.random() - 0.5) * 60 + 'deg';
+
+        el.style.setProperty('--x-offset', xOffset);
+        el.style.setProperty('--rot', rot);
+        el.style.left = (clickX - 15) + 'px';
+        el.style.top = (clickY - 20) + 'px';
+
+        document.body.appendChild(el);
+
+        setTimeout(() => {
+          el.remove();
+        }, 1200);
+      }
+    }
+
+    // 🎨 미니 캔버스 기능 (마우스 & 터치 드로잉)
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = '#fb8500';
+      ctx.lineWidth = 3;
+    }
+
+    window.addEventListener('load', resizeCanvas);
+    window.addEventListener('resize', resizeCanvas);
+
+    function getPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      return {
+        x: clientX - rect.left,
+        y: clientY - rect.top
+      };
+    }
+
+    function startDrawing(e) {
+      isDrawing = true;
+      const pos = getPos(e);
+      ctx.beginPath();
+      ctx.moveTo(pos.x, pos.y);
+      if (e.cancelable) e.preventDefault();
+    }
+
+    function draw(e) {
+      if (!isDrawing) return;
+      const pos = getPos(e);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+      if (e.cancelable) e.preventDefault();
+    }
+
+    function stopDrawing() {
+      if (isDrawing) {
+        ctx.closePath();
+        isDrawing = false;
+      }
+    }
+
+    function clearCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      ctx.clearRect(0, 0, rect.width, rect.height);
+    }
+
+    // 마우스 이벤트
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    window.addEventListener('mouseup', stopDrawing);
+    window.addEventListener('mouseleave', stopDrawing);
+
+    // 모바일 터치 이벤트
+    canvas.addEventListener('touchstart', startDrawing, { passive: false });
+    canvas.addEventListener('touchmove', draw, { passive: false });
+    window.addEventListener('touchend', stopDrawing);
+  </script>
+</body>
+</html>
